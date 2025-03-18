@@ -3,7 +3,6 @@
 //! Rust minimal sample.
 
 use kernel::prelude::*;
-// use crate::bindings::my_printkaaa;
 module! {
     type: RustMinimal,
     name: "rust_minimal",
@@ -14,7 +13,7 @@ module! {
 mod bindings {
     include!("bindings/lib.rs");
 }
-use crate::bindings::my_print;
+use crate::bindings::{my_print, another};
 struct RustMinimal {
     numbers: KVec<i32>,
 }
@@ -32,6 +31,10 @@ impl kernel::Module for RustMinimal {
             let num = my_print();
             for i in 0..num {
                 pr_info!("num: {}\n", i);
+            }
+            let num = another();
+            for i in 0..num {
+                pr_info!("another num: {}\n", i);
             }
         }
         Ok(RustMinimal { numbers })
