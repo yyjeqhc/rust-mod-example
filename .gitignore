@@ -11,3 +11,6 @@ Module.symvers
 # 忽略其他临时文件（可选）
 *.a
 *.tmp
+
+#Vscode
+.vscode/

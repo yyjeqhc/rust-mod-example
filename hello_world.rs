@@ -14,7 +14,7 @@ module! {
 mod bindings {
     include!("bindings/lib.rs");
 }
-use crate::bindings::my_printkaaa;
+use crate::bindings::my_print;
 struct RustMinimal {
     numbers: KVec<i32>,
 }
@@ -29,7 +29,7 @@ impl kernel::Module for RustMinimal {
         numbers.push(108, GFP_KERNEL)?;
         numbers.push(200, GFP_KERNEL)?;
         unsafe {
-            let num = my_printkaaa();
+            let num = my_print();
             for i in 0..num {
                 pr_info!("num: {}\n", i);
             }
