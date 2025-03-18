@@ -6,19 +6,19 @@ RUSTDIR ?= $(KERNELDIR)/rust
 BINDGEN ?= bindgen
 RUSTC ?= rustc
 
-BINDINGS := bindings/bindings_generated.rs
+HELPER_BINDINGS := bindings/bindings_helpers_generated.rs
 
 obj-m += two.o
 two-objs := helper/prinkt.o hello_world.o
 
-all: $(BINDINGS)
+all: $(HELPER_BINDINGS)
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
 
 clean:
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) clean
-	rm -f $(BINDINGS)
+	rm -f $(HELPER_BINDINGS)
 
-$(BINDINGS): myprintkaaa.h
+$(HELPER_BINDINGS): helper/prinkt.c
 	$(BINDGEN) $< \
 		--output $@ \
 		--rust-target 1.68 \
@@ -27,23 +27,12 @@ $(BINDINGS): myprintkaaa.h
 		--no-layout-tests \
 		--no-debug '.*' \
 		--enable-function-attribute-detection \
+		--blocklist-type '.*' \
+		--allowlist-function 'rust_helper_.*' \
 		-- \
 		-I$(KERNELDIR)/include \
 		-I$(KERNELDIR)/arch/x86/include \
-		-DMODULE
-	@sed -i '1i pub mod bindings {' $@
-	@echo "}" >> $@
-
-
-
-# 编译 Rust 代码
-# hello_world.o: hello_world.rs $(BINDINGS)
-# 	$(RUSTC) --crate-type=staticlib \
-# 		--target=x86_64-unknown-linux-gnu \
-# 		--edition=2021 \
-# 		--out-dir . \
-# 		--emit=obj \
-# 		-L $(RUSTDIR) \
-# 		--extern kernel=$(RUSTDIR)/kernel.o \
-# 		$<
-# 	mv hello_world.a hello_world.o
+		-DMODULE \
+		-Wno-missing-prototypes \
+		-Wno-missing-declarations
+	@sed -i 's/pub fn rust_helper_\([a-zA-Z0-9_]*\)/#[link_name="rust_helper_\1"]\n    pub fn \1/g' $@
