@@ -1,15 +1,11 @@
 KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
 
-RUSTDIR ?= $(KERNELDIR)/rust
-
 BINDGEN ?= bindgen
-RUSTC ?= rustc
-
 HELPER_BINDINGS := bindings/bindings_helpers_generated.rs
 
-obj-m += two.o
-two-objs := helper/prinkt.o hello_world.o
+obj-m += hello.o
+hello-objs := helper/prinkt.o hello_world.o
 
 all: $(HELPER_BINDINGS)
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
