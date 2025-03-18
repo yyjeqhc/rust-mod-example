@@ -3,7 +3,7 @@
 //! Rust minimal sample.
 
 use kernel::prelude::*;
-use crate::bindings::my_printkaaa;
+// use crate::bindings::my_printkaaa;
 module! {
     type: RustMinimal,
     name: "rust_minimal",
@@ -11,7 +11,11 @@ module! {
     description: "Rust minimal sample",
     license: "GPL",
 }
-include!("bindings_generated.rs");
+mod bindings {
+    include!("bindings/lib.rs");
+}
+use crate::bindings::bindings::my_printkaaa;
+
 struct RustMinimal {
     numbers: KVec<i32>,
 }

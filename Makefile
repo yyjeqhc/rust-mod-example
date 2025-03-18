@@ -6,7 +6,7 @@ RUSTDIR ?= $(KERNELDIR)/rust
 BINDGEN ?= bindgen
 RUSTC ?= rustc
 
-BINDINGS := bindings_generated.rs
+BINDINGS := bindings/bindings_generated.rs
 
 obj-m += two.o
 two-objs := helper/prinkt.o hello_world.o
