@@ -3,7 +3,7 @@
 //! Rust minimal sample.
 
 use kernel::prelude::*;
-
+use crate::bindings::my_printkaaa;
 module! {
     type: RustMinimal,
     name: "rust_minimal",
