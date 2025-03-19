@@ -11,6 +11,7 @@ mod bindings_raw {
 #[allow(dead_code)]
 mod bindings_helper {
     use super::bindings_raw::*;
+    
     include!("bindings_helpers_generated.rs");
 }
 

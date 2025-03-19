@@ -20,6 +20,7 @@ $(HELPER_BINDINGS): helper/helper.c
 		--rust-target 1.68 \
 		--use-core \
 		--with-derive-default \
+		--ctypes-prefix "kernel::ffi" \
 		--no-layout-tests \
 		--no-debug '.*' \
 		--enable-function-attribute-detection \
